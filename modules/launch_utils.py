@@ -462,11 +462,11 @@ def configure_for_tests():
 
 def start():
     #print(f"Launching {'API server' if '--noli' in sys.argv else 'Web UI'} with arguments: {' '.join(sys.argv[1:])}")
-    import li
+    import i_instant
     if '--noli' in sys.argv:
-        li.api_only()
+        i_instant.api_only()
     else:
-        li.li()
+        i_instant.bui()
 
 
 def dump_sysinfo():
