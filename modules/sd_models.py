@@ -161,7 +161,7 @@ def list_models():
         shared.opts.data['sd_model_checkpoint'] = checkpoint_info.title
     elif cmd_ckpt is not None and cmd_ckpt != shared.default_sd_model_file:
         #print(f"Checkpoint in --ckpt argument not found (Possible it was moved to {model_path}: {cmd_ckpt}", file=sys.stderr)
-
+        pass
     for filename in model_list:
         checkpoint_info = CheckpointInfo(filename)
         checkpoint_info.register()
@@ -226,7 +226,7 @@ def select_checkpoint():
     checkpoint_info = next(iter(checkpoints_list.values()))
     if model_checkpoint is not None:
         #print(f"Checkpoint {model_checkpoint} not found; loading fallback {checkpoint_info.title}", file=sys.stderr)
-
+        pass
     return checkpoint_info
 
 
