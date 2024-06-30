@@ -70,7 +70,7 @@ def webui():
         gradio_auth_creds = list(initialize_util.get_gradio_auth_creds()) or None
 
         auto_launch_browser = False
-        if os.getenv('SD_WEBUI_RESTARTING') != '1':
+        if os.getenv('RESTARTING') != '1':
             if shared.opts.auto_launch_browser == "Remote" or cmd_opts.autolaunch:
                 auto_launch_browser = True
             elif shared.opts.auto_launch_browser == "Local":
@@ -99,7 +99,7 @@ def webui():
 
         # gradio uses a very open CORS policy via app.user_middleware, which makes it possible for
         # an attacker to trick the user into opening a malicious HTML page, which makes a request to the
-        # running web ui and do whatever the attacker wants, including installing an extension and
+        # running and do whatever the attacker wants, including installing an extension and
         # running its code. We disable this here. Suggested by RyotaK.
         app.user_middleware = [x for x in app.user_middleware if x.cls.__name__ != 'CORSMiddleware']
 
@@ -140,9 +140,9 @@ def webui():
             break
 
         # disable auto launch webui in browser for subsequent UI Reload
-        os.environ.setdefault('SD_WEBUI_RESTARTING', '1')
+        os.environ.setdefault('RESTARTING', '1')
 
-        print('Restarting UI...')
+        print('Restarting...')
         shared.demo.close()
         time.sleep(0.5)
         startup_timer.reset()
