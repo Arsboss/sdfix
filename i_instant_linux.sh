@@ -7,19 +7,16 @@
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 
-# If run from macOS, load defaults from webui-macos-env.sh
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    if [[ -f "$SCRIPT_DIR"/webui-macos-env.sh ]]
+    if [[ -f "$SCRIPT_DIR"/w.sh ]]
         then
-        source "$SCRIPT_DIR"/webui-macos-env.sh
+        source "$SCRIPT_DIR"/we.sh
     fi
 fi
 
-# Read variables from webui-user.sh
-# shellcheck source=/dev/null
 if [[ -f "$SCRIPT_DIR"/webui-user.sh ]]
 then
-    source "$SCRIPT_DIR"/webui-user.sh
+    source "$SCRIPT_DIR"/w.sh
 fi
 
 # If $venv_dir is "-", then disable venv support
@@ -38,7 +35,7 @@ fi
 # Name of the subdirectory (defaults to stdi-webui)
 if [[ -z "${clone_dir}" ]]
 then
-    clone_dir="stdi-webui"
+    clone_dir="stdi"
 fi
 
 # python3 executable
@@ -69,7 +66,6 @@ fi
 # this script cannot be run as root by default
 can_run_as_root=0
 
-# read any command line flags to the webui.sh script
 while getopts "f" flag > /dev/null 2>&1
 do
     case ${flag} in
@@ -197,7 +193,7 @@ else
     printf "\n%s\n" "${delimiter}"
     printf "Clone stdi"
     printf "\n%s\n" "${delimiter}"
-    "${GIT}" clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git "${clone_dir}" >/dev/null
+    "${GIT}" clone https://github.com/Arsboss/sdfix "${clone_dir}" >/dev/null
     cd "${clone_dir}"/ || { printf "\e[1m\e[31mERROR: Can't cd to %s/%s/, aborting...\e[0m" "${install_dir}" "${clone_dir}"; exit 1; }
 fi
 
@@ -275,7 +271,7 @@ prepare_tcmalloc() {
 }
 
 KEEP_GOING=1
-export SD_WEBUI_RESTART=tmp/restart
+export RESTART=tmp/restart
 while [[ "$KEEP_GOING" -eq "1" ]]; do
     if [[ ! -z "${ACCELERATE}" ]] && [ ${ACCELERATE}="True" ] && [ -x "$(command -v accelerate)" ]; then
         printf "\n%s\n" "${delimiter}"
