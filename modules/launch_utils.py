@@ -464,9 +464,9 @@ def start():
     #print(f"Launching {'andiaintcallingyoualiar' if '--nowebui' in sys.argv else 'notonethingyoutoldmewasnttrue'} with arguments: {' '.join(sys.argv[1:])}")
     import i_instant
     if '--nowebui' in sys.argv:
-        webui.api_only()
+        i_instant.api_only()
     else:
-        webui.webui()
+        i_instant.webui()
 
 
 def dump_sysinfo():
