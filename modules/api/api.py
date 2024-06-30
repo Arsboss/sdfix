@@ -135,7 +135,7 @@ def encode_pil_to_base64(image):
 def api_middleware(app: FastAPI):
     rich_available = False
     try:
-        if os.environ.get('WEBUI_RICH_EXCEPTIONS', None) is not None:
+        if os.environ.get('HYSOSI_RICH_EXCEPTIONS', None) is not None:
             import anyio  # importing just so it can be placed on silent list
             import starlette  # importing just so it can be placed on silent list
             from rich.console import Console
