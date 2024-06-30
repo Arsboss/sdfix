@@ -78,9 +78,9 @@ return process_images(p)
 
         indent = " " * indent_level
         indented = code.replace('\n', f"\n{indent}")
-        body = f"""def __webuitemp__():
+        body = f"""def __litemp__():
 {indent}{indented}
-__webuitemp__()"""
+__litemp__()"""
 
         result = exec_with_return(body, module)
 

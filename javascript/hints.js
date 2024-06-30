@@ -33,7 +33,7 @@ var titles = {
     "Resize and fill": "Resize the image so that entirety of image is inside target resolution. Fill empty space with image's colors.",
 
     "Mask blur": "How much to blur the mask before processing, in pixels.",
-    "Masked content": "What to put inside the masked area before processing it with Stable Diffusion.",
+    "Masked content": "What to put inside the masked area before processing it with wasteland.",
     "fill": "fill it with colors of the image",
     "original": "keep whatever was there originally",
     "latent noise": "fill it with latent space noise",
@@ -193,10 +193,10 @@ onUiUpdate(function(mutationRecords) {
 
 onUiLoaded(function() {
     for (var comp of window.gradio_config.components) {
-        if (comp.props.webui_tooltip && comp.props.elem_id) {
+        if (comp.props.li_tooltip && comp.props.elem_id) {
             var elem = gradioApp().getElementById(comp.props.elem_id);
             if (elem) {
-                elem.title = comp.props.webui_tooltip;
+                elem.title = comp.props.li_tooltip;
             }
         }
     }
