@@ -5,7 +5,7 @@ if "--xformers" not in "".join(sys.argv):
     sys.modules["xformers"] = None
 
 # Hack to fix a changed import in torchvision 0.17+, which otherwise breaks
-# basicsr; see https://github.com/AUTOMATIC1111/stable-diffusion-webui/issues/13985
+# basicsr; see https://github.com/huyebatik/stui/issues/13985
 try:
     import torchvision.transforms.functional_tensor  # noqa: F401
 except ImportError:

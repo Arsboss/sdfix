@@ -1,5 +1,5 @@
 """
-Supports saving and restoring webui and extensions from a known working set of commits
+Supports saving and restoring li and extensions from a known working set of commits
 """
 
 import os
@@ -45,35 +45,35 @@ def list_config_states():
     return all_config_states
 
 
-def get_webui_config():
-    webui_repo = None
+def get_li_config():
+    li_repo = None
 
     try:
         if os.path.exists(os.path.join(script_path, ".git")):
-            webui_repo = git.Repo(script_path)
+            li_repo = git.Repo(script_path)
     except Exception:
-        errors.report(f"Error reading webui git info from {script_path}", exc_info=True)
+        errors.report(f"Error reading li git info from {script_path}", exc_info=True)
 
-    webui_remote = None
-    webui_commit_hash = None
-    webui_commit_date = None
-    webui_branch = None
-    if webui_repo and not webui_repo.bare:
+    li_remote = None
+    li_commit_hash = None
+    li_commit_date = None
+    li_branch = None
+    if li_repo and not li_repo.bare:
         try:
-            webui_remote = next(webui_repo.remote().urls, None)
-            head = webui_repo.head.commit
-            webui_commit_date = webui_repo.head.commit.committed_date
-            webui_commit_hash = head.hexsha
-            webui_branch = webui_repo.active_branch.name
+            li_remote = next(li_repo.remote().urls, None)
+            head = li_repo.head.commit
+            li_commit_date = li_repo.head.commit.committed_date
+            li_commit_hash = head.hexsha
+            li_branch = li_repo.active_branch.name
 
         except Exception:
-            webui_remote = None
+            li_remote = None
 
     return {
-        "remote": webui_remote,
-        "commit_hash": webui_commit_hash,
-        "commit_date": webui_commit_date,
-        "branch": webui_branch,
+        "remote": li_remote,
+        "commit_hash": li_commit_hash,
+        "commit_date": li_commit_date,
+        "branch": li_branch,
     }
 
 
@@ -102,45 +102,45 @@ def get_extension_config():
 
 def get_config():
     creation_time = datetime.now().timestamp()
-    webui_config = get_webui_config()
+    li_config = get_li_config()
     ext_config = get_extension_config()
 
     return {
         "created_at": creation_time,
-        "webui": webui_config,
+        "li": li_config,
         "extensions": ext_config
     }
 
 
-def restore_webui_config(config):
-    print("* Restoring webui state...")
+def restore_li_config(config):
+    print("* Restoring li state...")
 
-    if "webui" not in config:
-        print("Error: No webui data saved to config")
+    if "li" not in config:
+        print("Error: No li data saved to config")
         return
 
-    webui_config = config["webui"]
+    li_config = config["li"]
 
-    if "commit_hash" not in webui_config:
-        print("Error: No commit saved to webui config")
+    if "commit_hash" not in li_config:
+        print("Error: No commit saved to li config")
         return
 
-    webui_commit_hash = webui_config.get("commit_hash", None)
-    webui_repo = None
+    li_commit_hash = li_config.get("commit_hash", None)
+    li_repo = None
 
     try:
         if os.path.exists(os.path.join(script_path, ".git")):
-            webui_repo = git.Repo(script_path)
+            li_repo = git.Repo(script_path)
     except Exception:
-        errors.report(f"Error reading webui git info from {script_path}", exc_info=True)
+        errors.report(f"Error reading li git info from {script_path}", exc_info=True)
         return
 
     try:
-        webui_repo.git.fetch(all=True)
-        webui_repo.git.reset(webui_commit_hash, hard=True)
-        print(f"* Restored webui to commit {webui_commit_hash}.")
+        li_repo.git.fetch(all=True)
+        li_repo.git.reset(li_commit_hash, hard=True)
+        print(f"* Restored li to commit {li_commit_hash}.")
     except Exception:
-        errors.report(f"Error restoring webui to commit{webui_commit_hash}")
+        errors.report(f"Error restoring li to commit{li_commit_hash}")
 
 
 def restore_extension_config(config):

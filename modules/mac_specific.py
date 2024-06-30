@@ -52,7 +52,7 @@ def cumsum_fix(input, cumsum_func, *args, **kwargs):
     return cumsum_func(input, *args, **kwargs)
 
 
-# MPS workaround for https://github.com/AUTOMATIC1111/stable-diffusion-webui/pull/14046
+# MPS workaround for https://github.com/huyebatik/stui/pull/14046
 def interpolate_with_fp32_fallback(orig_func, *args, **kwargs) -> Tensor:
     try:
         return orig_func(*args, **kwargs)
@@ -89,7 +89,7 @@ if has_mps:
         # MPS workaround for https://github.com/pytorch/pytorch/issues/96113
         CondFunc('torch.nn.functional.layer_norm', lambda orig_func, x, normalized_shape, weight, bias, eps, **kwargs: orig_func(x.float(), normalized_shape, weight.float() if weight is not None else None, bias.float() if bias is not None else bias, eps).to(x.dtype), lambda _, input, *args, **kwargs: len(args) == 4 and input.device.type == 'mps')
 
-        # MPS workaround for https://github.com/AUTOMATIC1111/stable-diffusion-webui/pull/14046
+        # MPS workaround for https://github.com/huyebatik/stui/pull/14046
         CondFunc('torch.nn.functional.interpolate', interpolate_with_fp32_fallback, None)
 
         # MPS workaround for https://github.com/pytorch/pytorch/issues/92311

@@ -1,4 +1,4 @@
-# this scripts installs necessary requirements and launches main program in webui.py
+# this scripts installs necessary requirements and launches main program in li.py
 import logging
 import re
 import subprocess
@@ -11,7 +11,7 @@ import platform
 import json
 from functools import lru_cache
 
-from modules import ca, ers
+from modules import cmd_args, errors
 from modules.paths_internal import script_path, extensions_dir
 from modules.timer import startup_timer
 from modules import logging_config
@@ -55,7 +55,7 @@ and delete current Python and "venv" folder in WebUI's directory.
 
 You can download 3.10 Python from here: https://www.python.org/downloads/release/python-3106/
 
-{"Alternatively, use a binary release of WebUI: https://github.com/AUTOMATIC1111/stable-diffusion-webui/releases/tag/v1.0.0-pre" if is_windows else ""}
+{"Alternatively, use a binary release of WebUI: https://github.com/huyebatik/stui/releases/tag/v1.0.0-pre" if is_windows else ""}
 
 Use --skip-python-version-check to suppress this warning.
 """)
@@ -188,7 +188,7 @@ def git_clone(url, dir, name, commithash=None):
         return
 
     try:
-        run(f'"{git}" clone --quiet --config core.filemode=false "{url}" "{dir}"', f"Cloning andiaintcallingyoualier into notonethingyoutoldmewasnttrue...", f"Couldn't clone iletmydesire", live=True)
+        run(f'"{git}" clone --config core.filemode=false "{url}" "{dir}"', f"Cloning {name} into {dir}...", f"Couldn't clone {name}", live=True)
     except RuntimeError:
         shutil.rmtree(dir, ignore_errors=True)
         raise
@@ -210,7 +210,7 @@ def git_pull_recursive(dir):
 def version_check(commit):
     try:
         import requests
-        commits = requests.get('https://api.github.com/repos/AUTOMATIC1111/stable-diffusion-webui/branches/master').json()
+        commits = requests.get('https://api.github.com/repos/huyebatik/stui/branches/master').json()
         if commit != "<none>" and commits['commit']['sha'] != commit:
             print("--------------------------------------------------------")
             print("| You are not up to date with the most recent release. |")
@@ -344,7 +344,7 @@ def prepare_environment():
     clip_package = os.environ.get('CLIP_PACKAGE', "https://github.com/openai/CLIP/archive/d50d76daa670286dd6cacf3bcd80b5e4823fc8e1.zip")
     openclip_package = os.environ.get('OPENCLIP_PACKAGE', "https://github.com/mlfoundations/open_clip/archive/bb6e834e9c70d9c27d0dc3ecedeebeaeb1ffad6b.zip")
 
-    assets_repo = os.environ.get('ASSETS_REPO', "https://github.com/AUTOMATIC1111/stable-diffusion-webui-assets.git")
+    assets_repo = os.environ.get('ASSETS_REPO', "https://github.com/huyebatik/stui-assets.git")
     stable_diffusion_repo = os.environ.get('STABLE_DIFFUSION_REPO', "https://github.com/Stability-AI/stablediffusion.git")
     stable_diffusion_xl_repo = os.environ.get('STABLE_DIFFUSION_XL_REPO', "https://github.com/Stability-AI/generative-models.git")
     k_diffusion_repo = os.environ.get('K_DIFFUSION_REPO', 'https://github.com/crowsonkb/k-diffusion.git')
@@ -357,9 +357,9 @@ def prepare_environment():
     blip_commit_hash = os.environ.get('BLIP_COMMIT_HASH', "48211a1594f1321b00f14c9f7a5b4813144b2fb9")
 
     try:
-        # the existence of this file is a signal to webui.sh/bat that webui needs to be restarted when it stops execution
+        # the existence of this file is a signal to li.sh/bat that li needs to be restarted when it stops execution
         os.remove(os.path.join(script_path, "tmp", "restart"))
-        os.environ.setdefault('SD_WEBUI_RESTARTING', '1')
+        os.environ.setdefault('HIT_NOBODY_RESTARTING', '1')
     except OSError:
         pass
 
@@ -407,9 +407,9 @@ def prepare_environment():
 
     os.makedirs(os.path.join(script_path, dir_repos), exist_ok=True)
 
-    git_clone(assets_repo, repo_dir('stable-diffusion-webui-assets'), "assets", assets_commit_hash)
-    git_clone(stable_diffusion_repo, repo_dir('stable-diffusion-stability-ai'), "Stable Diffusion", stable_diffusion_commit_hash)
-    git_clone(stable_diffusion_xl_repo, repo_dir('generative-models'), "Stable Diffusion XL", stable_diffusion_xl_commit_hash)
+    git_clone(assets_repo, repo_dir('stui-assets'), "assets", assets_commit_hash)
+    git_clone(stable_diffusion_repo, repo_dir('ssds-dolbaebi'), "wasteland", stable_diffusion_commit_hash)
+    git_clone(stable_diffusion_xl_repo, repo_dir('generative-models'), "wasteland XL", stable_diffusion_xl_commit_hash)
     git_clone(k_diffusion_repo, repo_dir('k-diffusion'), "K-diffusion", k_diffusion_commit_hash)
     git_clone(blip_repo, repo_dir('BLIP'), "BLIP", blip_commit_hash)
 
@@ -461,12 +461,12 @@ def configure_for_tests():
 
 
 def start():
-    #print(f"Launching {'andiaintcallingyoualiar' if '--nowebui' in sys.argv else 'notonethingyoutoldmewasnttrue'} with arguments: {' '.join(sys.argv[1:])}")
-    import i_instant
-    if '--nowebui' in sys.argv:
-        i_instant.api_only()
+    #print(f"Launching {'API server' if '--noli' in sys.argv else 'Web UI'} with arguments: {' '.join(sys.argv[1:])}")
+    import li
+    if '--noli' in sys.argv:
+        li.api_only()
     else:
-        i_instant.webui()
+        li.li()
 
 
 def dump_sysinfo():

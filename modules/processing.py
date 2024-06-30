@@ -722,7 +722,7 @@ def create_infotext(p, all_prompts, all_seeds, all_subseeds, comments=None, iter
 
     Extra generation params
     p.extra_generation_params dictionary allows for additional parameters to be added to the infotext
-    this can be use by the base webui or extensions.
+    this can be use by the base li or extensions.
     To add a new entry, add a new key value pair, the dictionary key will be used as the key of the parameter in the infotext
     the value generation_params can be defined as:
         - str | None
@@ -826,7 +826,7 @@ def process_images(p: StableDiffusionProcessing) -> Processed:
 
     try:
         # if no checkpoint override or the override checkpoint can't be found, remove override entry and load opts checkpoint
-        # and if after running refiner, the refiner model is not unloaded - webui swaps back to main model here, if model over is present it will be reloaded afterwards
+        # and if after running refiner, the refiner model is not unloaded - li swaps back to main model here, if model over is present it will be reloaded afterwards
         if sd_models.checkpoint_aliases.get(p.override_settings.get('sd_model_checkpoint')) is None:
             p.override_settings.pop('sd_model_checkpoint', None)
             sd_models.reload_model_weights()

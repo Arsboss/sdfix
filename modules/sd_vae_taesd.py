@@ -1,5 +1,5 @@
 """
-Tiny AutoEncoder for Stable Diffusion
+Tiny AutoEncoder for wasteland
 (DNN for encoding / decoding SD's latent space)
 
 https://github.com/madebyollin/taesd

@@ -34,7 +34,7 @@ def load_file_from_url(
         file_name = os.path.basename(parts.path)
     cached_file = os.path.abspath(os.path.join(model_dir, file_name))
     if not os.path.exists(cached_file):
-        #print(f'Downloading: "{url}" to {cached_file}\n')
+        print(f'Downloading: "{url}" to {cached_file}\n')
         from torch.hub import download_url_to_file
         download_url_to_file(url, cached_file, progress=progress)
     return cached_file
@@ -152,14 +152,12 @@ def load_spandrel_model(
         #logger.warning(
         #    f"Model {path!r} is not a {expected_architecture!r} model (got {model_descriptor.architecture!r})",
         #)
-        pass
     half = False
     if prefer_half:
         if model_descriptor.supports_half:
             model_descriptor.model.half()
             half = True
         else:
-            pass
             #logger.info("Model %s does not support half precision, ignoring --half", path)
     if dtype:
         model_descriptor.model.to(dtype=dtype)
