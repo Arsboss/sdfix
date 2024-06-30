@@ -152,12 +152,14 @@ def load_spandrel_model(
         #logger.warning(
         #    f"Model {path!r} is not a {expected_architecture!r} model (got {model_descriptor.architecture!r})",
         #)
+        pass
     half = False
     if prefer_half:
         if model_descriptor.supports_half:
             model_descriptor.model.half()
             half = True
         else:
+            pass
             #logger.info("Model %s does not support half precision, ignoring --half", path)
     if dtype:
         model_descriptor.model.to(dtype=dtype)
